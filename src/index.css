@@ -1,0 +1,207 @@
+/* Import premium modern fonts */
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	--primary: 217 91% 60%; /* enhanced blue */
+	--primary-dark: 217 100% 45%; /* darker blue */
+	--primary-light: 217 100% 75%; /* lighter blue */
+	--primary-foreground: 0 0% 100%;
+	--radius: 0.75rem;
+	--accent: 281 89% 63%; /* purple accent */
+
+	/* Sidebar theme tokens kept for components */
+	--sidebar-background: 0 0% 100%;
+	--sidebar-foreground: 220 15% 10%;
+}
+
+html {
+	scroll-behavior: smooth;
+	color-scheme: light dark;
+}
+
+html.light {
+	--background: 0 0% 100%;
+	--foreground: 220 15% 10%;
+	--sidebar-background: 0 0% 100%;
+	--sidebar-foreground: 220 15% 10%;
+}
+
+html.dark {
+	--background: 220 13% 9%;
+	--foreground: 0 0% 95%;
+	--sidebar-background: 220 13% 13%;
+	--sidebar-foreground: 0 0% 95%;
+}
+
+html, body, #root {
+	height: 100%;
+}
+
+body {
+	font-family: 'Sora', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+	background-color: rgb(var(--background));
+	color: hsl(var(--foreground));
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	letter-spacing: -0.01em;
+}
+
+/* Hero-specific tweaks for premium look */
+.hero-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	background: linear-gradient(135deg, rgba(219, 234, 254, 0.8) 0%, rgba(219, 234, 254, 0.4) 100%);
+	color: rgb(30 58 138);
+	padding: 0.5rem 1rem;
+	border-radius: 9999px;
+	font-weight: 600;
+	border: 1px solid rgba(191, 219, 254, 0.6);
+	backdrop-filter: blur(8px);
+	font-size: 0.875rem;
+}
+
+html.dark .hero-badge {
+	background: linear-gradient(135deg, rgba(37, 99, 235, 0.3) 0%, rgba(37, 99, 235, 0.1) 100%);
+	color: rgb(147, 197, 253);
+	border: 1px solid rgba(37, 99, 235, 0.4);
+}
+
+.hero-title {
+	font-family: 'Sora', system-ui;
+	font-weight: 800;
+	line-height: 1.05;
+	letter-spacing: -0.02em;
+}
+
+/* Cards: premium design with glass-morphism effects */
+.card-ghost {
+	background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.8) 100%);
+	border-radius: 16px;
+	border: 1px solid rgba(203, 213, 225, 0.5);
+	backdrop-filter: blur(10px);
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+	transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.card-ghost:hover {
+	border-color: rgba(37, 99, 235, 0.3);
+	box-shadow: 0 12px 40px rgba(37, 99, 235, 0.15);
+	transform: translateY(-4px);
+}
+
+html.dark .card-ghost {
+	background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.9) 100%);
+	border: 1px solid rgba(71, 85, 105, 0.5);
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+html.dark .card-ghost:hover {
+	border-color: rgba(59, 130, 246, 0.4);
+	box-shadow: 0 12px 40px rgba(59, 130, 246, 0.2);
+}
+
+.feature-icon {
+	background: linear-gradient(135deg, rgba(219, 234, 254, 0.8) 0%, rgba(191, 219, 254, 0.6) 100%);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 72px;
+	height: 72px;
+	border-radius: 16px;
+	box-shadow: 0 4px 15px rgba(37, 99, 235, 0.15);
+	transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.feature-icon:hover {
+	transform: scale(1.1) rotate(5deg);
+}
+
+/* CTA section - premium gradient */
+.cta-hero {
+	background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 50%, #1e40af 100%);
+	box-shadow: 0 20px 60px rgba(37, 99, 235, 0.3);
+	position: relative;
+	overflow: hidden;
+}
+
+.cta-hero::before {
+	content: '';
+	position: absolute;
+	top: -50%;
+	right: -10%;
+	width: 400px;
+	height: 400px;
+	background: rgba(255, 255, 255, 0.1);
+	border-radius: 50%;
+	filter: blur(40px);
+}
+
+html.dark .cta-hero {
+	background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 50%, #172554 100%);
+	box-shadow: 0 20px 60px rgba(30, 64, 175, 0.4);
+}
+
+/* small helpers */
+.muted { color: #6b7280; }
+
+/* Make card grid look spacious on large screens */
+@media (min-width: 1024px) {
+	.card-grid-lg { gap: 2rem; }
+}
+
+/* Blob animation */
+@keyframes blob {
+	0% {
+		transform: translate(0px, 0px) scale(1);
+	}
+	33% {
+		transform: translate(30px, -50px) scale(1.1);
+	}
+	66% {
+		transform: translate(-20px, 20px) scale(0.9);
+	}
+	100% {
+		transform: translate(0px, 0px) scale(1);
+	}
+}
+
+.animate-blob {
+	animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+	animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+	animation-delay: 4s;
+}
+
+/* Smooth scroll */
+html {
+	scroll-behavior: smooth;
+}
+
+/* Custom scrollbar - premium design */
+::-webkit-scrollbar {
+	width: 12px;
+}
+
+::-webkit-scrollbar-track {
+	background: rgba(241, 245, 249, 0.8);
+}
+
+::-webkit-scrollbar-thumb {
+	background: linear-gradient(180deg, #3B82F6, #2563EB);
+	border-radius: 6px;
+	border: 3px solid rgba(241, 245, 249, 0.8);
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: linear-gradient(180deg, #2563EB, #1D4ED8);
+}

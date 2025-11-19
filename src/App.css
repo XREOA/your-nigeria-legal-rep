@@ -1,0 +1,164 @@
+/* Premium utility classes for slick design */
+
+/* Smooth gradient backgrounds */
+.gradient-primary {
+	background: linear-gradient(135deg, #2563EB 0%, #1e40af 100%);
+}
+
+.gradient-primary-light {
+	background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%);
+}
+
+.gradient-premium-bg {
+	background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 50%, #E2E8F0 100%);
+}
+
+html.dark .gradient-premium-bg {
+	background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #334155 100%);
+}
+
+/* Glass morphism effect */
+.glass-effect {
+	background: rgba(255, 255, 255, 0.7);
+	backdrop-filter: blur(10px);
+	border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+html.dark .glass-effect {
+	background: rgba(15, 23, 42, 0.7);
+	border: 1px solid rgba(71, 85, 105, 0.3);
+}
+
+/* Premium shadows */
+.shadow-premium {
+	box-shadow: 0 10px 40px rgba(37, 99, 235, 0.1);
+}
+
+.shadow-premium-lg {
+	box-shadow: 0 20px 60px rgba(37, 99, 235, 0.15);
+}
+
+/* Smooth transitions */
+.transition-smooth {
+	transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.transition-smooth-fast {
+	transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Premium buttons with gradient */
+.btn-premium {
+	background: linear-gradient(135deg, #2563EB 0%, #1e40af 100%);
+	color: white;
+	font-weight: 600;
+	border-radius: 12px;
+	padding: 0.75rem 1.5rem;
+	box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+	transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+	border: none;
+	cursor: pointer;
+}
+
+.btn-premium:hover {
+	box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+	transform: translateY(-2px);
+}
+
+.btn-premium:active {
+	transform: translateY(0);
+}
+
+/* Premium borders */
+.border-premium {
+	border: 1px solid rgba(203, 213, 225, 0.5);
+}
+
+.border-premium-hover:hover {
+	border-color: rgba(37, 99, 235, 0.4);
+}
+
+/* Text gradients */
+.text-gradient {
+	background: linear-gradient(135deg, #2563EB 0%, #1e40af 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+}
+
+/* Smooth underline effect */
+.underline-premium {
+	position: relative;
+	text-decoration: none;
+	color: #2563EB;
+}
+
+.underline-premium::after {
+	content: '';
+	position: absolute;
+	bottom: -2px;
+	left: 0;
+	width: 0;
+	height: 2px;
+	background: linear-gradient(90deg, #2563EB, #1e40af);
+	transition: width 0.3s ease;
+}
+
+.underline-premium:hover::after {
+	width: 100%;
+}
+
+/* Premium input focus */
+.input-premium:focus {
+	outline: none;
+	border-color: #2563EB;
+	box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Floating animation */
+@keyframes float {
+	0%, 100% {
+		transform: translateY(0px);
+	}
+	50% {
+		transform: translateY(-10px);
+	}
+}
+
+.animate-float {
+	animation: float 3s ease-in-out infinite;
+}
+
+/* Pulse animation with scale */
+@keyframes pulse-scale {
+	0%, 100% {
+		opacity: 1;
+		transform: scale(1);
+	}
+	50% {
+		opacity: 0.8;
+		transform: scale(1.05);
+	}
+}
+
+.animate-pulse-scale {
+	animation: pulse-scale 2s ease-in-out infinite;
+}
+
+/* Gradient text animation */
+@keyframes gradient-shift {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+.animate-gradient {
+	background-size: 200% 200%;
+	animation: gradient-shift 3s ease infinite;
+}
