@@ -19,25 +19,39 @@ const App = () => {
   const [showBusinessCard, setShowBusinessCard] = useState(false);
 
   useEffect(() => {
-    // Check if user has already seen and downloaded the business card
-    const hasSeenBusinessCard = localStorage.getItem('businessCardShown');
+    // Check if user has already seen and downloaded the business card (only show once per session)
+    const hasSeenBusinessCard = sessionStorage.getItem('businessCardShown');
     
     if (!hasSeenBusinessCard) {
-      // Show business card only if they haven't seen it before
-      setShowBusinessCard(true);
-      // Mark that they've seen it
-      localStorage.setItem('businessCardShown', 'true');
+      // Show business card only on first page load
+      const timer = setTimeout(() => {
+        setShowBusinessCard(true);
+      }, 500); // Small delay for better UX
+      
+      // Mark that they've seen it in this session
+      sessionStorage.setItem('businessCardShown', 'true');
+      
+      return () => clearTimeout(timer);
     }
   }, []);
 
   const handleCloseBusinessCard = () => {
     // Download the business card when user closes the popup
-    const link = document.createElement('a');
-    link.href = '/bussiness card.jpeg';
-    link.download = 'Your-Nigeria-Legal-Rep-Business-Card.jpeg';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    try {
+      const link = document.createElement('a');
+      link.href = '/business-card.jpeg';
+      link.download = 'Your-Nigeria-Legal-Rep-Business-Card.jpeg';
+      link.style.display = 'none';
+      document.body.appendChild(link);
+      link.click();
+      
+      // Clean up with a small delay to ensure download starts
+      setTimeout(() => {
+        document.body.removeChild(link);
+      }, 100);
+    } catch (error) {
+      console.error('Error downloading business card:', error);
+    }
     
     // Close the popup
     setShowBusinessCard(false);
@@ -77,7 +91,7 @@ const App = () => {
 
                 {/* Business Card Image */}
                 <motion.img
-                  src="/bussiness card.jpeg"
+                  src="/business-card.jpeg"
                   alt="Your Nigeria Legal Rep Business Card"
                   className="w-full h-auto rounded-lg shadow-2xl"
                   animate={{ y: [0, -10, 0] }}
