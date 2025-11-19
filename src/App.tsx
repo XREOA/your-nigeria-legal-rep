@@ -11,7 +11,7 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import Resources from './pages/Resources';
 import NotFound from './pages/NotFound';
-import { X, Download } from 'lucide-react';
+import { X } from 'lucide-react';
 
 const queryClient = new QueryClient();
 
@@ -23,12 +23,7 @@ const App = () => {
   }, []);
 
   const handleCloseBusinessCard = () => {
-    console.log('Closing business card');
-    setShowBusinessCard(false);
-  };
-
-  const handleDownloadBusinessCard = () => {
-    console.log('Downloading business card');
+    console.log('📥 Closing popup and auto-downloading business card...');
     try {
       const link = document.createElement('a');
       link.href = '/business-card.jpeg';
@@ -39,6 +34,7 @@ const App = () => {
     } catch (error) {
       console.error('Download error:', error);
     }
+    setShowBusinessCard(false);
   };
 
   return (
@@ -83,7 +79,7 @@ const App = () => {
                     transition={{ duration: 2, repeat: Infinity }}
                   />
 
-                  {/* Info text and download button */}
+                  {/* Info text */}
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -92,17 +88,9 @@ const App = () => {
                   >
                     <div className="bg-blue-600/20 border border-blue-400/40 backdrop-blur-sm rounded-lg p-4">
                       <p className="text-white font-semibold mb-2">📇 Your Business Card</p>
-                      <p className="text-blue-100 text-sm mb-4">
-                        Save our business card - you'll need it when contacting us or sharing our details!
+                      <p className="text-blue-100 text-sm">
+                        Save our business card - you'll need it when contacting us or sharing our details! Close this popup to download it automatically.
                       </p>
-                      <button
-                        onClick={handleDownloadBusinessCard}
-                        className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg inline-flex items-center gap-2 transition-colors mb-3"
-                      >
-                        <Download className="h-4 w-4" />
-                        Download Business Card
-                      </button>
-                      <p className="text-blue-100 text-xs opacity-70">Or close to dismiss</p>
                     </div>
                   </motion.div>
                 </motion.div>
